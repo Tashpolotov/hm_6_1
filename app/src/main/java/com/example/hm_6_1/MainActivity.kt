@@ -22,18 +22,19 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initListeners() = with(binding) {
-        binding.et.setText(intent.getStringExtra("go"))
+        result = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        }
+        et.setText(intent.getStringExtra("go"))
         btn.setOnClickListener {
             if (et.text.isNotEmpty()) {
                 val intent = Intent(this@MainActivity, SeccondActivity::class.java)
-                intent.putExtra("go", binding.et.text.toString())
+                intent.putExtra("go", et.text.toString())
                 result.launch(intent)
 
             } else {
-                Toast.makeText(this@MainActivity, "Edit text empty", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@MainActivity, "text empty", Toast.LENGTH_SHORT).show()
             }
         }
-        result = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            }
+
     }
 }
