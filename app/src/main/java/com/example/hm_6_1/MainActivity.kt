@@ -1,4 +1,5 @@
 package com.example.hm_6_1
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -22,13 +23,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initListeners() = with(binding) {
-        result = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        result = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {result->
+            if (result.resultCode == Activity.RESULT_OK) {
+                binding.et.setText(result.data?.getStringExtra(DATA_KEY))
+            }
         }
-        et.setText(intent.getStringExtra("go"))
+        et.setText(intent.getStringExtra(DATA_KEY))
         btn.setOnClickListener {
             if (et.text.isNotEmpty()) {
                 val intent = Intent(this@MainActivity, SeccondActivity::class.java)
-                intent.putExtra("go", et.text.toString())
+                intent.putExtra(DATA_KEY, et.text.toString())
                 result.launch(intent)
 
             } else {
@@ -36,5 +40,8 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+    }
+    companion object {
+        const val DATA_KEY = "data"
     }
 }
